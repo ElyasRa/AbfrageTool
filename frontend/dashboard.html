@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NightDUTY Abfragetool</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>NIGHTDUTY</h1>
+                <div class="accent-line"></div>
+            </div>
+
+            <div class="user-info">
+                <span class="username" id="currentUsername">Benutzer</span>
+                <button class="logout-btn" onclick="logout()">Abmelden</button>
+            </div>
+
+            <nav class="sidebar-nav" id="sidebarNav">
+                <!-- Navigation buttons will be populated by JavaScript -->
+            </nav>
+
+            <div class="sidebar-footer">
+                <p id="currentTime"></p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div id="mainContentArea">
+                <!-- Welcome Screen -->
+                <div class="content-header">
+                    <h2>Willkommen</h2>
+                    <p>im NightDUTY Abfragetool. Effizient. Strukturiert. Professionell.</p>
+                </div>
+
+                <div class="content-body">
+                    <div class="welcome-screen">
+                        <div class="welcome-content">
+                            <div class="quick-access-panel">
+                                <h3>Quick Access</h3>
+                                
+                                <div class="access-item">
+                                    <div class="icon">🔧</div>
+                                    <div class="access-item-text">
+                                        <h4>Abklärung Panne/Unfall</h4>
+                                        <p>Geführte Erfassung aller relevanten Details.</p>
+                                    </div>
+                                </div>
+
+                                <div class="access-item">
+                                    <div class="icon">💧</div>
+                                    <div class="access-item-text">
+                                        <h4>Annahme Ölspur</h4>
+                                        <p>Erfassung von Ölspuren und Umwelteinsätzen.</p>
+                                    </div>
+                                </div>
+
+                                <div class="access-item">
+                                    <div class="icon">📱</div>
+                                    <div class="access-item-text">
+                                        <h4>Annahme Mobi</h4>
+                                        <p>Schnelle Bearbeitung von Mobilitätsfällen.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quick-access-panel">
+                                <h3>Weitere Funktionen</h3>
+                                
+                                <div class="access-item">
+                                    <div class="icon">🚛</div>
+                                    <div class="access-item-text">
+                                        <h4>Annahme Kilian</h4>
+                                        <p>Aufträge für die Polizei, GDV und Bus/LKW.</p>
+                                    </div>
+                                </div>
+
+                                <div class="access-item">
+                                    <div class="icon">🅿️</div>
+                                    <div class="access-item-text">
+                                        <h4>Falschparker</h4>
+                                        <p>Private Falschparker-Meldungen.</p>
+                                    </div>
+                                </div>
+
+                                <div class="access-item">
+                                    <div class="icon">📊</div>
+                                    <div class="access-item-text">
+                                        <h4>Reports</h4>
+                                        <p>Tägliche Reports für Safar und Bad Homburg.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/forms.js"></script>
+    
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadForms();
+            updateTime();
+            setInterval(updateTime, 1000);
+        });
+
+        function updateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('currentTime').textContent = 
+                now.toLocaleDateString('de-DE', options);
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
