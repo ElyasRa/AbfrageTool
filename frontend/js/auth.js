@@ -38,6 +38,12 @@ async function checkAuth() {
         if (usernameElement) {
             usernameElement.textContent = user.username;
         }
+        
+        // Also update header username if present
+        const headerUsername = document.getElementById('headerUsername');
+        if (headerUsername) {
+            headerUsername.textContent = user.username;
+        }
 
         return true;
     } catch (error) {

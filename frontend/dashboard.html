@@ -8,8 +8,24 @@
 </head>
 <body>
     <div class="dashboard-container">
+        <!-- Header -->
+        <header class="app-header">
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="header-title">
+                <h1>NIGHTDUTY</h1>
+            </div>
+            <div class="header-actions">
+                <span class="username" id="headerUsername">Benutzer</span>
+                <button class="logout-btn" onclick="logout()">Abmelden</button>
+            </div>
+        </header>
+
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h1>NIGHTDUTY</h1>
                 <div class="accent-line"></div>
@@ -17,7 +33,6 @@
 
             <div class="user-info">
                 <span class="username" id="currentUsername">Benutzer</span>
-                <button class="logout-btn" onclick="logout()">Abmelden</button>
             </div>
 
             <nav class="sidebar-nav" id="sidebarNav">
@@ -104,6 +119,7 @@
     </div>
 
     <script src="/static/js/auth.js"></script>
+    <script src="/static/js/router.js"></script>
     <script src="/static/js/app.js"></script>
     <script src="/static/js/forms.js"></script>
     
@@ -114,6 +130,7 @@
             loadForms();
             updateTime();
             setInterval(updateTime, 1000);
+            initSidebar();
         });
 
         function updateTime() {
@@ -127,13 +144,36 @@
                 minute: '2-digit',
                 second: '2-digit'
             };
-            document.getElementById('currentTime').textContent = 
-                now.toLocaleDateString('de-DE', options);
+            const timeEl = document.getElementById('currentTime');
+            if (timeEl) {
+                timeEl.textContent = now.toLocaleDateString('de-DE', options);
+            }
         }
 
         function logout() {
             localStorage.removeItem('token');
             window.location.href = '/';
+        }
+
+        function initSidebar() {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('.main-content');
+
+            if (hamburgerBtn && sidebar) {
+                hamburgerBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                    hamburgerBtn.classList.toggle('active');
+                });
+
+                // Close sidebar when clicking outside on mobile
+                mainContent.addEventListener('click', function() {
+                    if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+                        sidebar.classList.remove('open');
+                        hamburgerBtn.classList.remove('active');
+                    }
+                });
+            }
         }
     </script>
 </body>

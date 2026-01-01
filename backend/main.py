@@ -63,6 +63,33 @@ async def dashboard():
     return {"message": "Dashboard not found"}
 
 
+# Serve dashboard.html for all form routes
+@app.get("/{route:path}")
+async def catch_all(route: str):
+    """Serve dashboard.html for all routes (SPA routing)"""
+    # List of valid SPA routes
+    valid_routes = [
+        "dashboard",
+        "abklaerung",
+        "oelspur",
+        "mobi",
+        "kilian",
+        "rudolph",
+        "wehner",
+        "falschparker",
+        "unterhaslberger",
+        "safar-bhg"
+    ]
+    
+    if route in valid_routes:
+        dashboard_file = os.path.join(frontend_path, "dashboard.html")
+        if os.path.exists(dashboard_file):
+            return FileResponse(dashboard_file)
+    
+    # If not a valid route, return 404
+    raise HTTPException(status_code=404, detail="Page not found")
+
+
 @app.post("/api/auth/login", response_model=Token)
 async def login(login_request: LoginRequest):
     """
