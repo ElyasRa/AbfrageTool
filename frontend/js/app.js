@@ -9,7 +9,13 @@ async function loadForms() {
         const response = await apiRequest('/api/forms/types');
         const data = await response.json();
         
+        // Store forms data globally for router
+        formsData = data.forms;
+        
         renderNavigation(data.forms);
+        
+        // Initialize router after forms are loaded
+        initRouter();
     } catch (error) {
         console.error('Failed to load forms:', error);
         showToast('Fehler beim Laden der Formulare', 'error');
@@ -39,9 +45,10 @@ function renderNavigation(forms) {
             <span>${form.name}</span>
         `;
 
-        button.addEventListener('click', () => {
-            loadFormContent(form);
-            setActiveNav(button);
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const route = getRouteForFormId(form.id);
+            navigateTo(route);
         });
 
         nav.appendChild(button);
